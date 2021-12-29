@@ -27,22 +27,22 @@ public:
   virtual void ConstructParticle();
   virtual void ConstructProcess();
 
-  G4OpWLS *GetWLSProcess() { return theWLSProcess; }
-  G4Cerenkov *GetCerenkovProcess() { return theCerenkovProcess; }
-  G4Scintillation *GetScintillationProcess() { return theScintProcess; }
-  G4OpAbsorption *GetAbsorptionProcess() { return theAbsorptionProcess; }
-  G4OpRayleigh *GetRayleighScatteringProcess() { return theRayleighScattering; }
-  G4OpMieHG *GetMieHGScatteringProcess() { return theMieHGScatteringProcess; }
-  G4OpBoundaryProcess *GetBoundaryProcess() { return theBoundaryProcess; }
+  G4OpWLS* GetWLSProcess() { return theWLSProcess; }
+  G4Cerenkov* GetCerenkovProcess() { return theCerenkovProcess; }
+  G4Scintillation* GetScintillationProcess() { return theScintProcess; }
+  G4OpAbsorption* GetAbsorptionProcess() { return theAbsorptionProcess; }
+  G4OpRayleigh* GetRayleighScatteringProcess() { return theRayleighScattering; }
+  G4OpMieHG* GetMieHGScatteringProcess() { return theMieHGScatteringProcess; }
+  G4OpBoundaryProcess* GetBoundaryProcess() { return theBoundaryProcess; }
 
 private:
-  G4OpWLS *theWLSProcess;
-  G4Cerenkov *theCerenkovProcess;
-  G4Scintillation *theScintProcess;
-  G4OpAbsorption *theAbsorptionProcess;
-  G4OpRayleigh *theRayleighScattering;
-  G4OpMieHG *theMieHGScatteringProcess;
-  G4OpBoundaryProcess *theBoundaryProcess;
+  G4OpWLS* theWLSProcess;
+  G4Cerenkov* theCerenkovProcess;
+  G4Scintillation* theScintProcess;
+  G4OpAbsorption* theAbsorptionProcess;
+  G4OpRayleigh* theRayleighScattering;
+  G4OpMieHG* theMieHGScatteringProcess;
+  G4OpBoundaryProcess* theBoundaryProcess;
 };
 
 #endif

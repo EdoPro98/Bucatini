@@ -20,10 +20,10 @@ public:
   BucatiniPrimaryGeneratorAction();
   virtual ~BucatiniPrimaryGeneratorAction();
 
-  virtual void GeneratePrimaries(G4Event *event);
+  virtual void GeneratePrimaries(G4Event* event);
 
 private:
-  G4GeneralParticleSource *fGeneralParticleSource;
+  G4GeneralParticleSource* fGeneralParticleSource;
 };
 
 #endif

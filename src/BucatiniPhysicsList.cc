@@ -24,7 +24,7 @@ BucatiniPhysicsList::BucatiniPhysicsList(G4String physName)
 
   // Define physics list factor and modular physics list
   G4PhysListFactory factory;
-  G4VModularPhysicsList *phys = nullptr;
+  G4VModularPhysicsList* phys = nullptr;
 
   // Check is physName corresponds to a real physics list run an exception if
   // not the case
@@ -37,8 +37,8 @@ BucatiniPhysicsList::BucatiniPhysicsList(G4String physName)
 
   // Register physics from physName
   for (G4int i = 0;; ++i) {
-    G4VPhysicsConstructor *elem =
-        const_cast<G4VPhysicsConstructor *>(phys->GetPhysics(i));
+    G4VPhysicsConstructor* elem =
+        const_cast<G4VPhysicsConstructor*>(phys->GetPhysics(i));
 
     if (elem == nullptr) {
       break;

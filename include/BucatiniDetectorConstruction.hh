@@ -26,7 +26,8 @@ static constexpr int nModuleRows = 10;
 static constexpr int nModuleCols = 24;
 static constexpr int nFibersRows = 32;
 static constexpr int nFibersCols = 16;
-static constexpr std::array<int, nModuleRows> nModulesInRow = {10, 10, 20, 20, 24, 24, 20, 20, 10, 10};
+static constexpr std::array<int, nModuleRows> nModulesInRow = {
+    10, 10, 20, 20, 24, 24, 20, 20, 10, 10};
 static constexpr int nTotalModules = 168;
 static constexpr double tubeOuterRadius = 1 * mm;
 static constexpr double tubeInnerRadius = 0.5 * mm;
@@ -72,15 +73,21 @@ public:
 
   void ConstructMaterials();
 
-  G4LogicalVolume* createScintillatingFiberLV(const double, G4Material*, const double, const double, G4Material*,
-                                              const double, G4Material*);
+  G4LogicalVolume* createScintillatingFiberLV(const double, G4Material*,
+                                              const double, const double,
+                                              G4Material*, const double,
+                                              G4Material*);
 
-  G4LogicalVolume* createCherenkovFiberLV(const double, G4Material*, const double, const double, G4Material*,
-                                          const double, G4Material*);
+  G4LogicalVolume* createCherenkovFiberLV(const double, G4Material*,
+                                          const double, const double,
+                                          G4Material*, const double,
+                                          G4Material*);
 
 private:
   void DefineMaterials();
-  G4Material* FindMaterial(G4String matName) { return fMaterials->GetMaterial(matName); }
+  G4Material* FindMaterial(G4String matName) {
+    return fMaterials->GetMaterial(matName);
+  }
 
   bool fCheckOverlaps; // option for checking volumes overlaps
   G4Region* fRegion;

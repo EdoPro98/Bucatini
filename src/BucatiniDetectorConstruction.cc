@@ -37,47 +37,47 @@ void BucatiniDetectorConstruction::DefineMaterials() {
   fMaterials = BucatiniMaterials::GetInstance();
 }
 
-G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
+G4VPhysicalVolume* BucatiniDetectorConstruction::Construct() {
   // Assign material to the calorimeter volumes
-  G4Material *airMaterial = FindMaterial("G4_AIR");
-  G4Material *siliconMaterial = FindMaterial("G4_Si");
-  G4Material *teflonMaterial = FindMaterial("G4_TEFLON");
-  G4Material *tubesMaterial = FindMaterial("brass");
-  G4Material *scintillatingCoreMaterial = FindMaterial("polystyrene");
-  G4Material *cherenkovCoreMaterial = FindMaterial("pmmaCher");
-  G4Material *scintillatingCladMaterial = FindMaterial("pmmaScint");
-  G4Material *cherenkovCladMaterial = FindMaterial("fluorinatedPolymer");
-  G4Material *glassMaterial = FindMaterial("glass");
+  G4Material* airMaterial = FindMaterial("G4_AIR");
+  G4Material* siliconMaterial = FindMaterial("G4_Si");
+  G4Material* teflonMaterial = FindMaterial("G4_TEFLON");
+  G4Material* tubesMaterial = FindMaterial("brass");
+  G4Material* scintillatingCoreMaterial = FindMaterial("polystyrene");
+  G4Material* cherenkovCoreMaterial = FindMaterial("pmmaCher");
+  G4Material* scintillatingCladMaterial = FindMaterial("pmmaScint");
+  G4Material* cherenkovCladMaterial = FindMaterial("fluorinatedPolymer");
+  G4Material* glassMaterial = FindMaterial("glass");
 
   // ------------------- //
   // Building geometries //
   // ------------------- //
 
   // World
-  G4VSolid *worldS = new G4Box("World", worldX / 2, worldY / 2, worldZ / 2);
-  G4LogicalVolume *worldLV = new G4LogicalVolume(worldS, airMaterial, "world");
-  G4VPhysicalVolume *worldPV = new G4PVPlacement(
+  G4VSolid* worldS = new G4Box("World", worldX / 2, worldY / 2, worldZ / 2);
+  G4LogicalVolume* worldLV = new G4LogicalVolume(worldS, airMaterial, "world");
+  G4VPhysicalVolume* worldPV = new G4PVPlacement(
       0, G4ThreeVector(0, 0, 0), worldLV, "world", 0, false, 0, fCheckOverlaps);
 
   // Absorber to calculate leakage
-  G4VSolid *leakageAbsorberS =
+  G4VSolid* leakageAbsorberS =
       new G4Sphere("leakageAbsorber", 2000., 2100., 0. * deg, 360. * deg,
                    0. * deg, 180. * deg);
-  G4LogicalVolume *leakageAbsorberLV =
+  G4LogicalVolume* leakageAbsorberLV =
       new G4LogicalVolume(leakageAbsorberS, airMaterial, "leakageAbsorber");
   new G4PVPlacement(0, G4ThreeVector(0, 0, 0), leakageAbsorberLV,
                     "leakageAbsorber", worldLV, false, 0, fCheckOverlaps);
 
   // Single calorimeter module 64x80 fibers
-  G4VSolid *moduleS =
+  G4VSolid* moduleS =
       new G4Box("module", moduleX / 2, moduleY / 2, moduleZ / 2 + sipmZ / 2);
-  G4LogicalVolume *moduleLV =
+  G4LogicalVolume* moduleLV =
       new G4LogicalVolume(moduleS, airMaterial, "module");
 
   // Light shield is on back of module in between sipm
-  G4VSolid *shieldS =
+  G4VSolid* shieldS =
       new G4Box("shield", moduleX / 2, moduleY / 2, sipmZ / 2 + 1 * mm);
-  G4LogicalVolume *shieldLV =
+  G4LogicalVolume* shieldLV =
       new G4LogicalVolume(shieldS, teflonMaterial, "shield");
   const G4ThreeVector shieldPos =
       G4ThreeVector(0, 0, moduleZ / 2 - sipmZ / 2 + 1 * mm);
@@ -85,7 +85,7 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
                     fCheckOverlaps);
 
   // Scield visual
-  G4VisAttributes *shieldVisAttr =
+  G4VisAttributes* shieldVisAttr =
       new G4VisAttributes(G4Colour(0.5, 0.5, 0.5, 0.25)); // green
   shieldVisAttr->SetVisibility(true);
   shieldVisAttr->SetForceWireframe(true);
@@ -93,10 +93,10 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
   shieldLV->SetVisAttributes(shieldVisAttr);
 
   // Calorimeter (matrix of modules)
-  G4VSolid *calorimeterS =
+  G4VSolid* calorimeterS =
       new G4Box("calorimeter", calorimeterX / 2, calorimeterY / 2,
                 calorimeterZ / 2 + sipmZ / 2);
-  G4LogicalVolume *calorimeterLV =
+  G4LogicalVolume* calorimeterLV =
       new G4LogicalVolume(calorimeterS, airMaterial, "calorimeter");
 
   // Modules equipped placement
@@ -130,13 +130,13 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
                     false, 0, fCheckOverlaps);
 
   // Single sipm volume
-  G4VSolid *sipmS = new G4Box("sipm", sipmX / 2, sipmY / 2, sipmZ / 2);
-  G4LogicalVolume *sipmLV = new G4LogicalVolume(sipmS, glassMaterial, "sipm");
+  G4VSolid* sipmS = new G4Box("sipm", sipmX / 2, sipmY / 2, sipmZ / 2);
+  G4LogicalVolume* sipmLV = new G4LogicalVolume(sipmS, glassMaterial, "sipm");
 
   // Silicon inside sipm
-  G4VSolid *siliconS = new G4Box("sipmSilicon", sipmSiliconX / 2,
+  G4VSolid* siliconS = new G4Box("sipmSilicon", sipmSiliconX / 2,
                                  sipmSiliconY / 2, sipmSiliconZ / 2);
-  G4LogicalVolume *siliconLV =
+  G4LogicalVolume* siliconLV =
       new G4LogicalVolume(siliconS, siliconMaterial, "sipmSilicon");
 
   const G4ThreeVector siliconPosition(0, 0, sipmZ / 2 - sipmSiliconZ / 2);
@@ -144,7 +144,7 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
                     0, fCheckOverlaps);
 
   // SiPM silicon visual
-  G4VisAttributes *siliconVisAttr =
+  G4VisAttributes* siliconVisAttr =
       new G4VisAttributes(G4Colour(0.0, 0.8, 0.0)); // green
   siliconVisAttr->SetVisibility(true);
   siliconVisAttr->SetForceWireframe(true);
@@ -152,26 +152,26 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
   siliconLV->SetVisAttributes(siliconVisAttr);
 
   // Tube
-  G4Tubs *tubeS = new G4Tubs("tube", tubeInnerRadius, tubeOuterRadius,
+  G4Tubs* tubeS = new G4Tubs("tube", tubeInnerRadius, tubeOuterRadius,
                              fiberZ / 2, 0. * deg, 360 * deg);
-  G4LogicalVolume *tubeLV = new G4LogicalVolume(tubeS, tubesMaterial, "tube");
+  G4LogicalVolume* tubeLV = new G4LogicalVolume(tubeS, tubesMaterial, "tube");
 
   // Clad and core solid
-  G4Tubs *fiberCladS = new G4Tubs("fiberClad", fiberCoreRadius, tubeInnerRadius,
+  G4Tubs* fiberCladS = new G4Tubs("fiberClad", fiberCoreRadius, tubeInnerRadius,
                                   fiberZ / 2, 0 * deg, 360 * deg);
-  G4Tubs *fiberCoreS = new G4Tubs("fiberClad", 0, fiberCoreRadius, fiberZ / 2,
+  G4Tubs* fiberCoreS = new G4Tubs("fiberClad", 0, fiberCoreRadius, fiberZ / 2,
                                   0 * deg, 360 * deg);
 
   // S and C clad logical
-  G4LogicalVolume *fiberScinCladLV =
+  G4LogicalVolume* fiberScinCladLV =
       new G4LogicalVolume(fiberCladS, scintillatingCladMaterial, "fiberCladS");
-  G4LogicalVolume *fiberCherCladLV =
+  G4LogicalVolume* fiberCherCladLV =
       new G4LogicalVolume(fiberCladS, cherenkovCladMaterial, "fiberCladC");
 
   // S and C core logical
-  G4LogicalVolume *fiberScinCoreLV =
+  G4LogicalVolume* fiberScinCoreLV =
       new G4LogicalVolume(fiberCoreS, scintillatingCoreMaterial, "fiberCoreS");
-  G4LogicalVolume *fiberCherCoreLV =
+  G4LogicalVolume* fiberCherCoreLV =
       new G4LogicalVolume(fiberCoreS, cherenkovCoreMaterial, "fiberCoreC");
 
   // FastFiber setup
@@ -182,34 +182,34 @@ G4VPhysicalVolume *BucatiniDetectorConstruction::Construct() {
   fRegion->AddRootLogicalVolume(fiberCherCoreLV);
 
   // Vis attributes
-  G4VisAttributes *tubeVisAtt = new G4VisAttributes(G4Colour(0.6, 0.3, 0.3));
+  G4VisAttributes* tubeVisAtt = new G4VisAttributes(G4Colour(0.6, 0.3, 0.3));
   tubeVisAtt->SetVisibility(true);
   tubeVisAtt->SetForceWireframe(true);
   tubeVisAtt->SetForceSolid(true);
   tubeLV->SetVisAttributes(tubeVisAtt);
 
-  G4VisAttributes *ScincoreVisAtt =
+  G4VisAttributes* ScincoreVisAtt =
       new G4VisAttributes(G4Colour(0.0, 0.0, 0.8));
   ScincoreVisAtt->SetVisibility(true);
   ScincoreVisAtt->SetForceWireframe(true);
   ScincoreVisAtt->SetForceSolid(true);
   fiberScinCoreLV->SetVisAttributes(ScincoreVisAtt);
 
-  G4VisAttributes *scinCladVisAtt =
+  G4VisAttributes* scinCladVisAtt =
       new G4VisAttributes(G4Colour(0.7, 0.85, 0.9));
   scinCladVisAtt->SetVisibility(true);
   scinCladVisAtt->SetForceWireframe(true);
   scinCladVisAtt->SetForceSolid(true);
   fiberScinCladLV->SetVisAttributes(scinCladVisAtt);
 
-  G4VisAttributes *cherCoreVisAtt =
+  G4VisAttributes* cherCoreVisAtt =
       new G4VisAttributes(G4Colour(0.8, 0.0, 0.0));
   cherCoreVisAtt->SetVisibility(true);
   cherCoreVisAtt->SetForceWireframe(true);
   cherCoreVisAtt->SetForceSolid(true);
   fiberCherCoreLV->SetVisAttributes(cherCoreVisAtt);
 
-  G4VisAttributes *cherCladVisAtt =
+  G4VisAttributes* cherCladVisAtt =
       new G4VisAttributes(G4Colour(1.0, 0.4, 0.3));
   cherCladVisAtt->SetVisibility(true);
   cherCladVisAtt->SetForceWireframe(true);
@@ -314,10 +314,10 @@ void BucatiniDetectorConstruction::ConstructSDandField() {
   sipmPropertiesScint.setPdeSpectrum(wlen, pdeS);
   sipmPropertiesCher.setPdeSpectrum(wlen, pdeC);
   // Pointer is deallocated in BucatiniSD~
-  sipm::SiPMSensor *sipmS = new sipm::SiPMSensor(sipmPropertiesScint);
-  sipm::SiPMSensor *sipmC = new sipm::SiPMSensor(sipmPropertiesCher);
+  sipm::SiPMSensor* sipmS = new sipm::SiPMSensor(sipmPropertiesScint);
+  sipm::SiPMSensor* sipmC = new sipm::SiPMSensor(sipmPropertiesCher);
 
-  BucatiniSD *sipmSD =
+  BucatiniSD* sipmSD =
       new BucatiniSD("sipmSD", "sipmHitsCollection", nSensor, sipmS, sipmC);
   G4SDManager::GetSDMpointer()->AddNewDetector(sipmSD);
   SetSensitiveDetector("sipmSilicon", sipmSD);

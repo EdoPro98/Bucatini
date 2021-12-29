@@ -71,9 +71,12 @@ inline void BucatiniHit::setIsScint(const bool isScint) { fIsScint = isScint; }
 
 inline const std::vector<double>& BucatiniHit::times() const { return fTimes; }
 
-inline const std::vector<double>& BucatiniHit::wavelengths() const { return fWavelengths; }
+inline const std::vector<double>& BucatiniHit::wavelengths() const {
+  return fWavelengths;
+}
 
-inline void BucatiniHit::digitize(const double integral, const double toa, const int nphe) {
+inline void BucatiniHit::digitize(const double integral, const double toa,
+                                  const int nphe) {
   fIntegral = integral;
   fToa = toa;
   fNPhotoelectrons = nphe;

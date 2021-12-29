@@ -26,11 +26,11 @@ public:
   virtual void BeginOfEventAction(const G4Event* event);
   virtual void EndOfEventAction(const G4Event* event);
 
-  void addEnergyEM(double);                 // Add em component
-  void addEnergyScinFibers(double);         // Add energy in scintillating fibers
-  void addEnergyCherFibers(double);         // Add energy in Cherenkov fibers
-  void addCherenkovPhotons(int);            // Add cherenkov photoelectron
-  void addScintillatingPhotons(int);        // Add scintillating photoelectron
+  void addEnergyEM(double);          // Add em component
+  void addEnergyScinFibers(double);  // Add energy in scintillating fibers
+  void addEnergyCherFibers(double);  // Add energy in Cherenkov fibers
+  void addCherenkovPhotons(int);     // Add cherenkov photoelectron
+  void addScintillatingPhotons(int); // Add scintillating photoelectron
   void addScintillatingPhotoelectrons(int); // Add scintillating photoelectron
   void addCherenkovPhotoelectrons(int);     // Add scintillating photoelectron
   void addEnergyDeposited(double);          // Add all energy deposited
@@ -41,7 +41,8 @@ public:
   void addSiPMHit(int, double);
 
 private:
-  BucatiniHitsCollection* GetHitsCollection(const int hcID, const G4Event* event) const;
+  BucatiniHitsCollection* GetHitsCollection(const int hcID,
+                                            const G4Event* event) const;
 
   HistoManager* fHistoManager;
 
@@ -61,25 +62,45 @@ private:
 };
 
 // Inline functions definition
-inline void BucatiniEventAction::addEnergyLeaked(const double e) { fEnergyLeaked += e; }
+inline void BucatiniEventAction::addEnergyLeaked(const double e) {
+  fEnergyLeaked += e;
+}
 
-inline void BucatiniEventAction::savePrimaryPDGID(const int pdgid) { fPrimaryPDGID = pdgid; }
+inline void BucatiniEventAction::savePrimaryPDGID(const int pdgid) {
+  fPrimaryPDGID = pdgid;
+}
 
-inline void BucatiniEventAction::savePrimaryEnergy(const double e) { fEnergyPrimary = e; }
+inline void BucatiniEventAction::savePrimaryEnergy(const double e) {
+  fEnergyPrimary = e;
+}
 
 inline void BucatiniEventAction::addEnergyEM(const double e) { fEnergyEM += e; }
 
-inline void BucatiniEventAction::addEnergyScinFibers(const double e) { fEnergyScinFibers += e; }
+inline void BucatiniEventAction::addEnergyScinFibers(const double e) {
+  fEnergyScinFibers += e;
+}
 
-inline void BucatiniEventAction::addEnergyCherFibers(const double e) { fEnergyCherFibers += e; }
+inline void BucatiniEventAction::addEnergyCherFibers(const double e) {
+  fEnergyCherFibers += e;
+}
 
-inline void BucatiniEventAction::addScintillatingPhotons(const int n) { fNPhotonsScint += n; }
+inline void BucatiniEventAction::addScintillatingPhotons(const int n) {
+  fNPhotonsScint += n;
+}
 
-inline void BucatiniEventAction::addCherenkovPhotons(const int n) { fNPhotonsCher += n; }
+inline void BucatiniEventAction::addCherenkovPhotons(const int n) {
+  fNPhotonsCher += n;
+}
 
-inline void BucatiniEventAction::addScintillatingPhotoelectrons(const int n) { fNPhotoelectronsScint += n; }
+inline void BucatiniEventAction::addScintillatingPhotoelectrons(const int n) {
+  fNPhotoelectronsScint += n;
+}
 
-inline void BucatiniEventAction::addCherenkovPhotoelectrons(const int n) { fNPhotoelectronsCher += n; }
+inline void BucatiniEventAction::addCherenkovPhotoelectrons(const int n) {
+  fNPhotoelectronsCher += n;
+}
 
-inline void BucatiniEventAction::addEnergyDeposited(const double e) { fEnergyDeposited += e; }
+inline void BucatiniEventAction::addEnergyDeposited(const double e) {
+  fEnergyDeposited += e;
+}
 #endif

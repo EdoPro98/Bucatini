@@ -19,7 +19,8 @@ class G4HCofThisEvent;
 
 class BucatiniSD : public G4VSensitiveDetector {
 public:
-  BucatiniSD(const std::string&, const std::string&, const int, sipm::SiPMSensor*, sipm::SiPMSensor*);
+  BucatiniSD(const std::string&, const std::string&, const int,
+             sipm::SiPMSensor*, sipm::SiPMSensor*);
   virtual ~BucatiniSD();
 
   virtual void Initialize(G4HCofThisEvent* hitCollection);

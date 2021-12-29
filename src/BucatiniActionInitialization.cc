@@ -18,16 +18,16 @@ BucatiniActionInitialization::BucatiniActionInitialization()
 BucatiniActionInitialization::~BucatiniActionInitialization() {}
 
 void BucatiniActionInitialization::BuildForMaster() const {
-  HistoManager *histo = new HistoManager();
+  HistoManager* histo = new HistoManager();
   SetUserAction(new BucatiniRunAction(histo));
 }
 
 void BucatiniActionInitialization::Build() const {
-  HistoManager *histo = new HistoManager();
+  HistoManager* histo = new HistoManager();
 
   SetUserAction(new BucatiniPrimaryGeneratorAction);
   SetUserAction(new BucatiniRunAction(histo));
-  BucatiniEventAction *eventAction = new BucatiniEventAction(histo);
+  BucatiniEventAction* eventAction = new BucatiniEventAction(histo);
   SetUserAction(eventAction);
   SetUserAction(new BucatiniSteppingAction(eventAction));
 }

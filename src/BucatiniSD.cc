@@ -9,9 +9,12 @@
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-BucatiniSD::BucatiniSD(const std::string& name, const std::string& hitsCollectionName, const int nofCells,
-                       sipm::SiPMSensor* sipmS, sipm::SiPMSensor* sipmC)
-  : G4VSensitiveDetector(name), fHitsCollection(nullptr), fNofCells(nofCells), fSiPMScint(sipmS), fSiPMCher(sipmC) {
+BucatiniSD::BucatiniSD(const std::string& name,
+                       const std::string& hitsCollectionName,
+                       const int nofCells, sipm::SiPMSensor* sipmS,
+                       sipm::SiPMSensor* sipmC)
+    : G4VSensitiveDetector(name), fHitsCollection(nullptr), fNofCells(nofCells),
+      fSiPMScint(sipmS), fSiPMCher(sipmC) {
   collectionName.insert(hitsCollectionName);
 }
 
@@ -19,7 +22,8 @@ BucatiniSD::~BucatiniSD() {}
 
 void BucatiniSD::Initialize(G4HCofThisEvent* hce) {
   // Create hits collection
-  fHitsCollection = new BucatiniHitsCollection(SensitiveDetectorName, collectionName[0]);
+  fHitsCollection =
+      new BucatiniHitsCollection(SensitiveDetectorName, collectionName[0]);
 
   // Add this collection in hce
   auto hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
@@ -35,14 +39,17 @@ void BucatiniSD::Initialize(G4HCofThisEvent* hce) {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 bool BucatiniSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
-  const G4ParticleDefinition* particleDef = step->GetTrack()->GetParticleDefinition();
+  const G4ParticleDefinition* particleDef =
+      step->GetTrack()->GetParticleDefinition();
 
   if (particleDef == G4OpticalPhoton::Definition()) {
     const auto touchable = step->GetPreStepPoint()->GetTouchable();
     const int sipmCopyNumber = touchable->GetCopyNumber(1);
     const int moduleCopyNumber = touchable->GetCopyNumber(2);
-    const int sipmId = sipmCopyNumber + (moduleCopyNumber * nFibersCols * nFibersRows);
-    BucatiniHit* hit = static_cast<BucatiniHit*>(fHitsCollection->GetHit(sipmId));
+    const int sipmId =
+        sipmCopyNumber + (moduleCopyNumber * nFibersCols * nFibersRows);
+    BucatiniHit* hit =
+        static_cast<BucatiniHit*>(fHitsCollection->GetHit(sipmId));
 
     if (isScint(sipmCopyNumber)) {
       hit->setIsScint(true);

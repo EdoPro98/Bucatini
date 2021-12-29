@@ -54,7 +54,7 @@ G4bool FastFiberData::checkRepetitive(const FastFiberData theData,
   return true;
 }
 
-FastFiberModel::FastFiberModel(G4String name, G4Region *envelope)
+FastFiberModel::FastFiberModel(G4String name, G4Region* envelope)
     : G4VFastSimulationModel(name, envelope),
       mDataPrevious(0, 0., 0., 0., G4ThreeVector(0), G4ThreeVector(0),
                     G4ThreeVector(0)),
@@ -79,15 +79,15 @@ FastFiberModel::FastFiberModel(G4String name, G4Region *envelope)
 
 FastFiberModel::~FastFiberModel() {}
 
-G4bool FastFiberModel::IsApplicable(const G4ParticleDefinition &type) {
+G4bool FastFiberModel::IsApplicable(const G4ParticleDefinition& type) {
   return &type == G4OpticalPhoton::OpticalPhotonDefinition();
 }
 
-G4bool FastFiberModel::ModelTrigger(const G4FastTrack &fasttrack) {
+G4bool FastFiberModel::ModelTrigger(const G4FastTrack& fasttrack) {
   if (!fSwitch)
     return false; // turn on/off the model
 
-  const G4Track *track = fasttrack.GetPrimaryTrack();
+  const G4Track* track = fasttrack.GetPrimaryTrack();
 
   // make sure that the track does not get absorbed after transportation, as
   // number of interaction length left is reset when doing transportation
@@ -113,7 +113,7 @@ G4bool FastFiberModel::ModelTrigger(const G4FastTrack &fasttrack) {
   //   before entering computationally heavy
   //            // operations
 
-  const G4Tubs *tubs = static_cast<G4Tubs *>(solid);
+  const G4Tubs* tubs = static_cast<G4Tubs*>(solid);
   const G4double fiberLen = 2. * tubs->GetZHalfLength();
 
   mFiberPos =
@@ -157,7 +157,7 @@ G4bool FastFiberModel::ModelTrigger(const G4FastTrack &fasttrack) {
   return true;
 }
 
-void FastFiberModel::DoIt(const G4FastTrack &fasttrack, G4FastStep &faststep) {
+void FastFiberModel::DoIt(const G4FastTrack& fasttrack, G4FastStep& faststep) {
   const auto track = fasttrack.GetPrimaryTrack();
 
   if (fKill) { // absorption
@@ -189,7 +189,7 @@ void FastFiberModel::DoIt(const G4FastTrack &fasttrack, G4FastStep &faststep) {
   return;
 }
 
-G4bool FastFiberModel::checkTotalInternalReflection(const G4Track *track) {
+G4bool FastFiberModel::checkTotalInternalReflection(const G4Track* track) {
   if (!fProcAssigned)
     setPostStepProc(track); // locate OpBoundaryProcess only once
   if (track->GetTrackStatus() == fStopButAlive ||
@@ -322,14 +322,14 @@ G4bool FastFiberModel::checkNILL() {
   return true;
 }
 
-G4ThreeVector FastFiberModel::getXYcomponent(const FastFiberData &data) {
+G4ThreeVector FastFiberModel::getXYcomponent(const FastFiberData& data) {
   const auto relativePos = data.globalPosition - mFiberPos;
   const auto zcomponent = relativePos.dot(mFiberAxis) * mFiberAxis;
   return (relativePos - zcomponent);
 }
 
-void FastFiberModel::setPostStepProc(const G4Track *track) {
-  G4ProcessManager *pm = track->GetDefinition()->GetProcessManager();
+void FastFiberModel::setPostStepProc(const G4Track* track) {
+  G4ProcessManager* pm = track->GetDefinition()->GetProcessManager();
   auto postStepProcessVector = pm->GetPostStepProcessVector();
 
   for (int np = 0; np < postStepProcessVector->entries(); np++) {
@@ -341,12 +341,12 @@ void FastFiberModel::setPostStepProc(const G4Track *track) {
       continue;
 
     if (theProcess->GetProcessSubType() == G4OpProcessSubType::fOpBoundary)
-      pOpBoundaryProc = dynamic_cast<G4OpBoundaryProcess *>(theProcess);
+      pOpBoundaryProc = dynamic_cast<G4OpBoundaryProcess*>(theProcess);
     else if (theProcess->GetProcessSubType() ==
              G4OpProcessSubType::fOpAbsorption)
-      pOpAbsorption = dynamic_cast<G4OpAbsorption *>(theProcess);
+      pOpAbsorption = dynamic_cast<G4OpAbsorption*>(theProcess);
     else if (theProcess->GetProcessSubType() == G4OpProcessSubType::fOpWLS)
-      pOpWLS = dynamic_cast<G4OpWLS *>(theProcess);
+      pOpWLS = dynamic_cast<G4OpWLS*>(theProcess);
   }
 
   fProcAssigned = true;
@@ -444,17 +444,17 @@ void FastFiberModel::print() {
 void FastFiberModel::DefineCommands() {
   mMessenger = new G4GenericMessenger(this, "/fastfiber/model/",
                                       "fastfiber model control");
-  G4GenericMessenger::Command &safetyCmd = mMessenger->DeclareProperty(
+  G4GenericMessenger::Command& safetyCmd = mMessenger->DeclareProperty(
       "safety", fSafety, "min number of total internal reflection");
   safetyCmd.SetParameterName("safety", true);
   safetyCmd.SetDefaultValue("2.");
 
-  G4GenericMessenger::Command &switchCmd =
+  G4GenericMessenger::Command& switchCmd =
       mMessenger->DeclareProperty("on", fSwitch, "turn on fastfiber model");
   switchCmd.SetParameterName("on", true);
   switchCmd.SetDefaultValue("True");
 
-  G4GenericMessenger::Command &verboseCmd =
+  G4GenericMessenger::Command& verboseCmd =
       mMessenger->DeclareProperty("verbose", fVerbose, "verbose level");
   verboseCmd.SetParameterName("verbose", true);
   verboseCmd.SetDefaultValue("0");

@@ -22,9 +22,9 @@
 #include <string>
 
 class HistoManager;
-BucatiniRunAction::BucatiniRunAction(HistoManager *histoMgr)
+BucatiniRunAction::BucatiniRunAction(HistoManager* histoMgr)
     : G4UserRunAction(), fHistoManager(histoMgr) {
-  G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Only merge in MT mode to avoid warning when running in Sequential mode
 #ifdef G4MULTITHREADED
   analysisManager->SetNtupleMerging(true);
@@ -36,15 +36,15 @@ BucatiniRunAction::BucatiniRunAction(HistoManager *histoMgr)
 
 BucatiniRunAction::~BucatiniRunAction() {}
 
-void BucatiniRunAction::BeginOfRunAction(const G4Run *) {
-  G4AnalysisManager *analysisManager = G4AnalysisManager::Instance();
+void BucatiniRunAction::BeginOfRunAction(const G4Run*) {
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Open an output file
   analysisManager->OpenFile();
   fHistoManager->Book();
 }
 
-void BucatiniRunAction::EndOfRunAction(const G4Run *) {
+void BucatiniRunAction::EndOfRunAction(const G4Run*) {
   fHistoManager->PrintStatistic();
   fHistoManager->Save();
 }

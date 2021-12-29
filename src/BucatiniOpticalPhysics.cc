@@ -34,7 +34,7 @@ void BucatiniOpticalPhysics::ConstructProcess() {
 
   theScintProcess = new G4Scintillation();
   theScintProcess->SetTrackSecondariesFirst(true);
-  G4EmSaturation *emSaturation = G4LossTableManager::Instance()->EmSaturation();
+  G4EmSaturation* emSaturation = G4LossTableManager::Instance()->EmSaturation();
   theScintProcess->AddSaturation(emSaturation);
 
   theCerenkovProcess = new G4Cerenkov();
@@ -48,7 +48,7 @@ void BucatiniOpticalPhysics::ConstructProcess() {
   // theWLSProcess = new G4OpWLS();
 
   // Get optical photon process manager
-  G4ProcessManager *pManager =
+  G4ProcessManager* pManager =
       G4OpticalPhoton::OpticalPhoton()->GetProcessManager();
 
   // Add processes to optical photon with optical photon process manager
@@ -65,7 +65,7 @@ void BucatiniOpticalPhysics::ConstructProcess() {
   while ((*theParticleIterator)()) {
 
     // Get particle
-    G4ParticleDefinition *particle = theParticleIterator->value();
+    G4ParticleDefinition* particle = theParticleIterator->value();
     G4String particleName = particle->GetParticleName();
 
     // Get particle process manager

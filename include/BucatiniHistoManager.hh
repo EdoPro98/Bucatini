@@ -16,9 +16,11 @@ public:
 
   void FillHisto(const int id, const double e, const double weight = 1.0);
 
-  void FillNtuple(const double, const double, const double, const double, const double, const double, const int,
-                  const int, const int, const int, const std::vector<double>&, const std::vector<double>&,
-                  const std::vector<int>&, const std::vector<int>&);
+  void FillNtuple(const double, const double, const double, const double,
+                  const double, const double, const int, const int, const int,
+                  const int, const std::vector<double>&,
+                  const std::vector<double>&, const std::vector<int>&,
+                  const std::vector<int>&);
   void setSiPMIntegral(const std::vector<double>&);
   void setSiPMToa(const std::vector<double>&);
   void setSiPMPhotoelectrons(const std::vector<int>&);
@@ -34,10 +36,18 @@ private:
   G4AnalysisManager* fAnalysisManager;
 };
 
-inline void HistoManager::setSiPMIntegral(const std::vector<double>& x) { fIntegralSiPM = x; }
-inline void HistoManager::setSiPMToa(const std::vector<double>& x) { fToaSiPM = x; }
-inline void HistoManager::setSiPMPhotoelectrons(const std::vector<int>& x) { fPhotoelectronSiPM = x; }
-inline void HistoManager::setSiPMPhotons(const std::vector<int>& x) { fPhotonsSiPM = x; }
+inline void HistoManager::setSiPMIntegral(const std::vector<double>& x) {
+  fIntegralSiPM = x;
+}
+inline void HistoManager::setSiPMToa(const std::vector<double>& x) {
+  fToaSiPM = x;
+}
+inline void HistoManager::setSiPMPhotoelectrons(const std::vector<int>& x) {
+  fPhotoelectronSiPM = x;
+}
+inline void HistoManager::setSiPMPhotons(const std::vector<int>& x) {
+  fPhotonsSiPM = x;
+}
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif

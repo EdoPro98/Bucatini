@@ -22,21 +22,20 @@
 
 #include "SiPM.h"
 
-BucatiniEventAction::BucatiniEventAction(HistoManager *histoMgr)
+BucatiniEventAction::BucatiniEventAction(HistoManager* histoMgr)
     : G4UserEventAction(), fHistoManager(histoMgr) {}
 
 BucatiniEventAction::~BucatiniEventAction() {}
 
-BucatiniHitsCollection *
-BucatiniEventAction::GetHitsCollection(G4int hcID, const G4Event *event) const {
+BucatiniHitsCollection*
+BucatiniEventAction::GetHitsCollection(G4int hcID, const G4Event* event) const {
 
-  BucatiniHitsCollection *hitsCollection =
-      static_cast<BucatiniHitsCollection *>(
-          event->GetHCofThisEvent()->GetHC(hcID));
+  BucatiniHitsCollection* hitsCollection = static_cast<BucatiniHitsCollection*>(
+      event->GetHCofThisEvent()->GetHC(hcID));
   return hitsCollection;
 }
 
-void BucatiniEventAction::BeginOfEventAction(const G4Event *) {
+void BucatiniEventAction::BeginOfEventAction(const G4Event*) {
   fEnergyEM = 0.;
   fEnergyScinFibers = 0.;
   fEnergyCherFibers = 0.;
@@ -49,13 +48,13 @@ void BucatiniEventAction::BeginOfEventAction(const G4Event *) {
   fEnergyPrimary = 0;
 }
 
-void BucatiniEventAction::EndOfEventAction(const G4Event *event) {
+void BucatiniEventAction::EndOfEventAction(const G4Event* event) {
   if (fSipmHCID == -1) {
     fSipmHCID =
         G4SDManager::GetSDMpointer()->GetCollectionID("sipmHitsCollection");
   }
 
-  BucatiniHitsCollection *hitsCollection = GetHitsCollection(fSipmHCID, event);
+  BucatiniHitsCollection* hitsCollection = GetHitsCollection(fSipmHCID, event);
 
   std::vector<double> sipmIntegral(nSensor);
   std::vector<double> sipmToa(nSensor);
@@ -63,7 +62,7 @@ void BucatiniEventAction::EndOfEventAction(const G4Event *event) {
   std::vector<int> sipmNph(nSensor);
 
   for (int i = 0; i < nSensor; ++i) {
-    const BucatiniHit *hit = (*hitsCollection)[i];
+    const BucatiniHit* hit = (*hitsCollection)[i];
     if (hit->isScint() == true) {
       // Scint
       fNPhotoelectronsScint += hit->nPhotoelectrons();

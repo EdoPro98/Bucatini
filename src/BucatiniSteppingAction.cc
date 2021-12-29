@@ -19,15 +19,15 @@
 
 #include "Randomize.hh"
 
-BucatiniSteppingAction::BucatiniSteppingAction(BucatiniEventAction *eventAction)
+BucatiniSteppingAction::BucatiniSteppingAction(BucatiniEventAction* eventAction)
     : G4UserSteppingAction(), fEventAction(eventAction) {}
 
 BucatiniSteppingAction::~BucatiniSteppingAction() {}
 
-void BucatiniSteppingAction::UserSteppingAction(const G4Step *step) {
+void BucatiniSteppingAction::UserSteppingAction(const G4Step* step) {
 
-  const G4ParticleDefinition *particleDef = step->GetTrack()->GetDefinition();
-  const G4VPhysicalVolume *preStepVolume = step->GetTrack()->GetVolume();
+  const G4ParticleDefinition* particleDef = step->GetTrack()->GetDefinition();
+  const G4VPhysicalVolume* preStepVolume = step->GetTrack()->GetVolume();
 
   // Kill Photons going outside calo and return
   if (particleDef == G4OpticalPhoton::Definition() &&
@@ -48,14 +48,14 @@ void BucatiniSteppingAction::UserSteppingAction(const G4Step *step) {
   // opticalSteppingAction(step);
 }
 
-void BucatiniSteppingAction::opticalSteppingAction(const G4Step *step) {}
+void BucatiniSteppingAction::opticalSteppingAction(const G4Step* step) {}
 
 //
-void BucatiniSteppingAction::globalSteppingAction(const G4Step *step) {
+void BucatiniSteppingAction::globalSteppingAction(const G4Step* step) {
   // Get step info
-  const G4VPhysicalVolume *preStepVolume = step->GetTrack()->GetVolume();
+  const G4VPhysicalVolume* preStepVolume = step->GetTrack()->GetVolume();
   const double energyDeposited = step->GetTotalEnergyDeposit();
-  const G4ParticleDefinition *particleDef = step->GetTrack()->GetDefinition();
+  const G4ParticleDefinition* particleDef = step->GetTrack()->GetDefinition();
   const int particlePDG = step->GetTrack()->GetDefinition()->GetPDGEncoding();
   const std::string volumeName = preStepVolume->GetName();
 
