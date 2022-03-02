@@ -153,7 +153,7 @@ void BucatiniMaterials::CreateMaterials() {
   MPTPolystyrene->AddProperty("RINDEX", photonEnergy, refractiveindexPolystyrene);
   MPTPolystyrene->AddProperty("ABSLENGTH", photonEnergy, absLenPolystyrene);
   MPTPolystyrene->AddProperty("SCINTILLATIONCOMPONENT1", photonEnergy, emissionPolystyrene);
-  MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD", 1000. / MeV);
+  MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD", 300. / MeV);
   MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE", 1.0);
   MPTPolystyrene->AddConstProperty("SCINTILLATIONTIMECONSTANT1", 2.7 * ns);
 

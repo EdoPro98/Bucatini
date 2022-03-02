@@ -21,7 +21,7 @@ public:
   virtual void EndOfEvent(G4HCofThisEvent* hitCollection);
 
 private:
-  void Digitize(BucatiniHit*, const bool);
+  void Digitize(BucatiniHit*);
 
   BucatiniHitsCollection* fHitsCollection;
   const int fNofCells;

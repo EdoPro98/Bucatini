@@ -7,7 +7,6 @@ project(Bucatini)
 
 # Find Geant4 package, activating all available UI and Vis drivers by default
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
-option(ISOPTICAL "Enable (fast) optical physics and sipm simaulation" ON)
 
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)

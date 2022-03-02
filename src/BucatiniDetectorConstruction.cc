@@ -52,7 +52,7 @@ G4VPhysicalVolume* BucatiniDetectorConstruction::Construct() {
   G4VPhysicalVolume* worldPV = new G4PVPlacement(0, G4ThreeVector(), worldLV, "world", 0, false, 0, fCheckOverlaps);
 
   // Absorber to calculate leakage
-  G4VSolid* leakageAbsorberS = new G4Sphere("leakageAbsorber", 2 * m, 2.1 * m, 0 * deg, 360 * deg, 0 * deg, 180 * deg);
+  G4VSolid* leakageAbsorberS = new G4Sphere("leakageAbsorber", 3 * m, 2.8 * m, 0 * deg, 360 * deg, 0 * deg, 180 * deg);
   G4LogicalVolume* leakageAbsorberLV = new G4LogicalVolume(leakageAbsorberS, vacuumMaterial, "leakageAbsorber");
   new G4PVPlacement(0, G4ThreeVector(), leakageAbsorberLV, "leakageAbsorber", worldLV, false, 0, fCheckOverlaps);
 
@@ -94,7 +94,7 @@ G4VPhysicalVolume* BucatiniDetectorConstruction::Construct() {
   G4VSolid* siliconS = new G4Box("sipmSilicon", sipmSiliconX / 2, sipmSiliconY / 2, sipmSiliconZ / 2);
   G4LogicalVolume* siliconLV = new G4LogicalVolume(siliconS, siliconMaterial, "sipmSilicon");
 
-  const G4ThreeVector siliconPosition(0, 0, sipmZ / 2 - sipmSiliconZ / 2);
+  const G4ThreeVector siliconPosition(0, 0, - sipmZ / 2 + sipmSiliconZ / 2);
   new G4PVPlacement(0, siliconPosition, siliconLV, "sipmSilicon", sipmLV, false, 0, fCheckOverlaps);
 
   fRegion = new G4Region("fiberRegion");
@@ -142,7 +142,7 @@ G4VPhysicalVolume* BucatiniDetectorConstruction::Construct() {
   int copyNo = 0;
   for(int i=0; i<nFibersRows; ++i){
     const double ypos = -moduleY / 2 + i * std::sqrt(3) * tubeOuterRadius + tubeOuterRadius;
-    const double xpos = (((i/16)&1) == 0) * tubeOuterRadius;
+    const double xpos = (i%2 == 0) * tubeOuterRadius;
     if(i % 2 == 0){
       new G4PVPlacement(0,G4ThreeVector(xpos,ypos,0),tubesScinRowLV, "tubeScin", moduleLV,false,copyNo,fCheckOverlaps);
     }else{
@@ -189,7 +189,6 @@ G4VPhysicalVolume* BucatiniDetectorConstruction::Construct() {
 }
 
 void BucatiniDetectorConstruction::ConstructSDandField() {
-#ifdef ISOPTICAL
   sipm::SiPMProperties sipmProperties;
   sipm::SiPMProperties sipmPropertiesScin;
   sipm::SiPMProperties sipmPropertiesCher;
@@ -233,7 +232,6 @@ void BucatiniDetectorConstruction::ConstructSDandField() {
   BucatiniSD* sipmSD = new BucatiniSD("sipmSD", "sipmHitsCollection", nSensor, sipmS, sipmC);
   G4SDManager::GetSDMpointer()->AddNewDetector(sipmSD);
   SetSensitiveDetector("sipmSilicon", sipmSD);
-#endif
 
   new FastSimModelOpFiber("FastSimOpFiberRegion", fRegion);
 }

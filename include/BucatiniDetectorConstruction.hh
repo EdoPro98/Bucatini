@@ -45,18 +45,18 @@ static constexpr double worldY = 2 * calorimeterY;
 static constexpr double worldZ = 5 * calorimeterZ;
 
 // Geometry parameters of the fiber
-static constexpr double fiberCoreRadius = 0.485 * mm;
+static constexpr double fiberCoreRadius = 0.485 - 0.015 * mm;
 static constexpr double fiberZ = moduleZ;
 
 // Geometry parameters of the SiPM
 static constexpr double sipmX = 1.3 * mm;
 static constexpr double sipmY = sipmX;
-static constexpr double sipmZ = 0.36 * mm;
+static constexpr double sipmZ = 0.5 * mm;
 
 // Geometry parameters of the SiPM, active silicon layer
 static constexpr double sipmSiliconX = 1. * mm;
 static constexpr double sipmSiliconY = sipmSiliconX;
-static constexpr double sipmSiliconZ = 0.05 * mm;
+static constexpr double sipmSiliconZ = 300 * um;
 
 class BucatiniDetectorConstruction : public G4VUserDetectorConstruction {
 

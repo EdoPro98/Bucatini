@@ -1,14 +1,12 @@
 /run/initialize
-/run/printProgress 10
-
-/analysis/h1/setActivationToAll false
+/run/printProgress 100
 
 # 1D accelerator beam
 /gps/particle e-
 /gps/pos/type Beam
 
 # the beam spot is centered at the origin and is
-# of 1d gaussian shape with a 1mm central plateau
+# of 1d gaussian shape with a 0.5mm central plateau
 /gps/pos/shape Circle
 /gps/pos/centre 0. 0. 1500 mm
 /gps/pos/radius 2.5 mm
@@ -47,37 +45,17 @@
 /gps/particle e-
 /run/beamOn 500
 
-#/analysis/setFileName Electron80GeV
-#/gps/energy 80 GeV
-#/gps/particle e-
-#/run/beamOn 500
+/analysis/setFileName Electron80GeV.root
+/gps/energy 80 GeV
+/gps/particle e-
+/run/beamOn 500
 
-#/analysis/setFileName Electron100GeV
-#/gps/energy 100 GeV
-#/gps/particle e-
-#/run/beamOn 1000
+/analysis/setFileName Electron100GeV.root
+/gps/energy 100 GeV
+/gps/particle e-
+/run/beamOn 500
 
-#
-
-#/analysis/setFileName Muon100GeV
-#/gps/energy 100 GeV
-#/gps/particle mu-
-#/run/beamOn 1000
-
-#/analysis/setFileName Pion1_100GeV
-#/gps/ene/type Lin
-#/gps/ene/min 1 GeV
-#/gps/ene/max 100 GeV
-#/gps/ene/gradient 0
-#/gps/ene/intercept 1
-#/gps/particle pi-
-#/run/beamOn 10000
-  
-#/analysis/setFileName Electron1_100GeV
-#/gps/ene/type Lin
-#/gps/ene/min 1 GeV
-#/gps/ene/max 100 GeV
-#/gps/ene/gradient 0
-#/gps/ene/intercept 1
-#/gps/particle e-
-#/run/beamOn 10000
+/analysis/setFileName Muon100GeV.root
+/gps/energy 100 GeV
+/gps/particle mu-
+/run/beamOn 1000

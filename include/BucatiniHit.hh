@@ -11,19 +11,13 @@
 class BucatiniHit : public G4VHit {
 public:
   BucatiniHit();
-  BucatiniHit(const BucatiniHit&);
   virtual ~BucatiniHit();
 
-  // operators
-  bool operator==(const BucatiniHit&) const;
 
   inline void* operator new(size_t);
   inline void operator delete(void*);
 
-  virtual void Draw(){};
   virtual void Print();
-
-  void add(const double, const double);
 
 private:
   friend class BucatiniSD;
@@ -31,9 +25,15 @@ private:
 
   std::vector<double> fTimes;       // Photon hit time
   std::vector<double> fWavelengths; // Photon wlen
+  
   int fNPhotoelectrons = 0;         // Photons detected
   double fIntegral = 0;
   double fToa = 0;
+  bool fIsScint = false;
+
+  int fRow,fCol,fModule;
+  double fXPos;
+  double fYPos;
 };
 
 using BucatiniHitsCollection = G4THitsCollection<BucatiniHit>;
@@ -52,11 +52,6 @@ inline void BucatiniHit::operator delete(void* hit) {
     BucatiniHitAllocator = new G4Allocator<BucatiniHit>;
   }
   BucatiniHitAllocator->FreeSingle((BucatiniHit*)hit);
-}
-
-inline void BucatiniHit::add(const double t, const double w) {
-  fTimes.emplace_back(t);
-  fWavelengths.emplace_back(w);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

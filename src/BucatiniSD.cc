@@ -33,8 +33,7 @@ void BucatiniSD::Initialize(G4HCofThisEvent* hce) {
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 bool BucatiniSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
-  const G4ParticleDefinition* particleDef = step->GetTrack()->GetParticleDefinition();
-  if (particleDef != G4OpticalPhoton::Definition()) {
+  if (step->GetTrack()->GetParticleDefinition() != G4OpticalPhoton::Definition()) {
     return false;
   }
   // GetCopyNumber(1) == sipmColCopyNumber  (aka col in row)
@@ -47,32 +46,34 @@ bool BucatiniSD::ProcessHits(G4Step* step, G4TouchableHistory*) {
   const int sipmId = module * nFibersRows * nFibersCols + sipmRow * nFibersCols + sipmCol; 
   BucatiniHit* hit = static_cast<BucatiniHit*>(fHitsCollection->GetHit(sipmId));
 
-  const double time = step->GetTrack()->GetGlobalTime();
-  const double wlen = 1239.84193 / step->GetTrack()->GetKineticEnergy() * eV;
-  hit->add(time, wlen);
+  hit->fTimes.push_back(step->GetTrack()->GetGlobalTime());
+  hit->fWavelengths.push_back(1239.84193 / step->GetTrack()->GetKineticEnergy() * eV);
+  hit->fModule = module;
+  hit->fRow = sipmRow;
+  hit->fCol = sipmCol;
+  hit->fIsScint = (sipmRow % 2 == 0);
+
   step->GetTrack()->SetTrackStatus(fStopAndKill);
   return true;
 }
 
-void BucatiniSD::Digitize(BucatiniHit* hit, const bool isScint) {
+void BucatiniSD::Digitize(BucatiniHit* hit) {
   sipm::SiPMSensor* lSensor;
-  if (isScint) {
+  if (hit->fIsScint) {
     lSensor = fSiPMScint;
   } else {
     lSensor = fSiPMCher;
   }
   
-  if (hit->fTimes.size() > 1) {
-    lSensor->resetState();
-    lSensor->addPhotons(hit->fTimes, hit->fWavelengths);
-    lSensor->runEvent();
-    const double integral = lSensor->signal().integral(0, 250, 1.5);
-    const double toa = lSensor->signal().toa(0, 250, 1.5);
-    const int nPhe = lSensor->debug().nPhotoelectrons;
-    hit->fIntegral = integral;
-    hit->fToa = toa;
-    hit->fNPhotoelectrons = nPhe;
-  }
+  lSensor->resetState();
+  lSensor->addPhotons(hit->fTimes, hit->fWavelengths);
+  lSensor->runEvent();
+  const double integral = lSensor->signal().integral(0, 250, 1.5);
+  const double toa = lSensor->signal().toa(0, 250, 1.5);
+  const int nPhe = lSensor->debug().nPhotoelectrons;
+  hit->fIntegral = integral;
+  hit->fToa = toa;
+  hit->fNPhotoelectrons = nPhe;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -80,11 +81,11 @@ void BucatiniSD::Digitize(BucatiniHit* hit, const bool isScint) {
 void BucatiniSD::EndOfEvent(G4HCofThisEvent* hce) {
   auto hcID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
   auto hc = hce->GetHC(hcID);
-  const int nHits = hc->GetSize();
-  for (int i = 0; i < nHits; ++i) {
+  for (int i = 0; i < nSensor; ++i) {
     BucatiniHit* hit = static_cast<BucatiniHit*>(hc->GetHit(i));
-    const bool isScint = (i/16)%2==0;
-    Digitize(hit,isScint);
+    // Digitise only if at least 2 photon hit sipm
+    if(hit->fTimes.size() > 2)
+      Digitize(hit);
   }
 }
 

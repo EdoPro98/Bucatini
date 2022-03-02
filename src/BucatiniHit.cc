@@ -15,10 +15,6 @@ BucatiniHit::~BucatiniHit() {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-bool BucatiniHit::operator==(const BucatiniHit& right) const { return (this == &right) ? true : false; }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 void BucatiniHit::Print() {
   if (fTimes.size() > 0) {
     G4cout << "========================================" << G4endl;

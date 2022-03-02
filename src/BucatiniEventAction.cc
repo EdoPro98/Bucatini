@@ -34,16 +34,13 @@ void BucatiniEventAction::EndOfEventAction(const G4Event* event) {
   std::vector<int> sipmNphe(nSensor);
   std::vector<int> sipmNph(nSensor);
 
-#ifdef ISOPTICAL
-  if (fSipmHCID == -1) {
-    fSipmHCID = G4SDManager::GetSDMpointer()->GetCollectionID("sipmHitsCollection");
-  }
+  fSipmHCID = G4SDManager::GetSDMpointer()->GetCollectionID("sipmHitsCollection");
 
   BucatiniHitsCollection* hitsCollection = GetHitsCollection(fSipmHCID, event);
 
   for (int i = 0; i < nSensor; ++i) {
-    const BucatiniHit* hit = (*hitsCollection)[i];
-    if (((i / nFibersCols) & 1) == 0) {
+    const BucatiniHit* hit = static_cast<BucatiniHit*>(hitsCollection->GetHit(i));
+    if (hit->fIsScint) {
       // Scint
       fNPhotoelectronsScint += hit->fNPhotoelectrons;
       fNPhotonsScint += hit->fTimes.size();
@@ -57,7 +54,7 @@ void BucatiniEventAction::EndOfEventAction(const G4Event* event) {
     sipmNph[i] = hit->fTimes.size();
     sipmNphe[i] = hit->fNPhotoelectrons;
   }
-#endif
+
   fHistoManager->FillHisto(0, fEnergyDeposited * MeV);
   fHistoManager->FillHisto(1, fEnergyEM * MeV);
   fHistoManager->FillHisto(2, fEnergyScinFibers * MeV);
