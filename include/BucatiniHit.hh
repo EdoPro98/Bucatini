@@ -1,10 +1,10 @@
+#include "BucatiniSD.hh"
 #ifndef BucatiniHit_h
 #define BucatiniHit_h 1
 
 #include "G4Allocator.hh"
 #include "G4THitsCollection.hh"
 #include "G4Threading.hh"
-#include "G4ThreeVector.hh"
 #include "G4VHit.hh"
 #include <vector>
 
@@ -24,24 +24,16 @@ public:
   virtual void Print();
 
   void add(const double, const double);
-  void digitize(const double, const double, const int);
-  void setIsScint(const bool);
-
-  const std::vector<double>& times() const;
-  const std::vector<double>& wavelengths() const;
-  int nPhotons() const { return fTimes.size(); }
-  int nPhotoelectrons() const { return fNPhotoelectrons; }
-  double integral() const { return fIntegral; }
-  double toa() const { return fToa; }
-  bool isScint() const { return fIsScint; }
 
 private:
+  friend class BucatiniSD;
+  friend class BucatiniEventAction;
+
   std::vector<double> fTimes;       // Photon hit time
   std::vector<double> fWavelengths; // Photon wlen
   int fNPhotoelectrons = 0;         // Photons detected
   double fIntegral = 0;
   double fToa = 0;
-  bool fIsScint = false;
 };
 
 using BucatiniHitsCollection = G4THitsCollection<BucatiniHit>;
@@ -65,21 +57,6 @@ inline void BucatiniHit::operator delete(void* hit) {
 inline void BucatiniHit::add(const double t, const double w) {
   fTimes.emplace_back(t);
   fWavelengths.emplace_back(w);
-}
-
-inline void BucatiniHit::setIsScint(const bool isScint) { fIsScint = isScint; }
-
-inline const std::vector<double>& BucatiniHit::times() const { return fTimes; }
-
-inline const std::vector<double>& BucatiniHit::wavelengths() const {
-  return fWavelengths;
-}
-
-inline void BucatiniHit::digitize(const double integral, const double toa,
-                                  const int nphe) {
-  fIntegral = integral;
-  fToa = toa;
-  fNPhotoelectrons = nphe;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

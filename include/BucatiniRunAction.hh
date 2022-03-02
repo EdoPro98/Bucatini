@@ -1,15 +1,7 @@
-//**************************************************
-// \file BucatiniRunAction.hh
-// \brief: Definition of BucatiniBRunAction class
-// \author: Edoardo Proserpio edoardo.proserpio@gmail.com
-// \start date: 7 July 2021
-//**************************************************
-
 #ifndef BucatiniRunAction_h
 #define BucatiniRunAction_h 1
 
 #include "G4UserRunAction.hh"
-#include "globals.hh"
 
 class HistoManager;
 class G4Run;

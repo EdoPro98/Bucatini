@@ -1,15 +1,16 @@
 #ifndef BucatiniMaterials_h
 #define BucatiniMaterials_h 1
 
-#include "G4Material.hh"
-#include "G4NistManager.hh"
-#include "G4OpticalSurface.hh"
+#include <string>
+
+class G4Material;
+class G4NistManager;
 
 class BucatiniMaterials {
 public:
   virtual ~BucatiniMaterials();
   static BucatiniMaterials* GetInstance();
-  G4Material* GetMaterial(const G4String);
+  G4Material* GetMaterial(const std::string&);
 
 private:
   BucatiniMaterials();

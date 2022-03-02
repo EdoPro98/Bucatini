@@ -1,22 +1,19 @@
-//**************************************************
-// \file BucatiniDetectorConstruction.hh
-// \brief: Definition of BucatiniDetectorConstruction class
-// \author: Edoardo Proserpio edoardo.proserpio@gmail.com
-// \start date: 7 July 2021
-//**************************************************
-
 #ifndef BucatiniDetectorConstruction_h
 #define BucatiniDetectorConstruction_h 1
 
 // Includers from Geant4
 #include "BucatiniMaterials.hh"
-#include "G4Region.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4VUserDetectorConstruction.hh"
+
 #include <array>
+#include <string>
 
 class G4Material;
 class G4VPhysicalVolume;
+class G4Region;
+class G4LogicalVolume;
+
 // ----------------------------------------------------- //
 // Geometrical constants that can be used in other files //
 // ----------------------------------------------------- //
@@ -26,13 +23,12 @@ static constexpr int nModuleRows = 10;
 static constexpr int nModuleCols = 24;
 static constexpr int nFibersRows = 32;
 static constexpr int nFibersCols = 16;
-static constexpr std::array<int, nModuleRows> nModulesInRow = {
-    10, 10, 20, 20, 24, 24, 20, 20, 10, 10};
+static constexpr std::array<int, nModuleRows> nModulesInRow = {10, 10, 20, 20, 24, 24, 20, 20, 10, 10};
 static constexpr int nTotalModules = 168;
 static constexpr double tubeOuterRadius = 1 * mm;
 static constexpr double tubeInnerRadius = 0.5 * mm;
 static constexpr double moduleX = 2 * tubeOuterRadius * nFibersCols;
-static constexpr double moduleY = tubeOuterRadius * 1.732 * nFibersRows;
+static constexpr double moduleY = tubeOuterRadius * 1.733 * nFibersRows;
 static constexpr double moduleZ = 2000. * mm;
 static constexpr int nSensor = nFibersCols * nFibersRows * nTotalModules;
 
@@ -72,22 +68,9 @@ public:
   virtual void ConstructSDandField();
 
   void ConstructMaterials();
-
-  G4LogicalVolume* createScintillatingFiberLV(const double, G4Material*,
-                                              const double, const double,
-                                              G4Material*, const double,
-                                              G4Material*);
-
-  G4LogicalVolume* createCherenkovFiberLV(const double, G4Material*,
-                                          const double, const double,
-                                          G4Material*, const double,
-                                          G4Material*);
-
 private:
   void DefineMaterials();
-  G4Material* FindMaterial(G4String matName) {
-    return fMaterials->GetMaterial(matName);
-  }
+  G4Material* FindMaterial(std::string matName) { return fMaterials->GetMaterial(matName); }
 
   bool fCheckOverlaps; // option for checking volumes overlaps
   G4Region* fRegion;

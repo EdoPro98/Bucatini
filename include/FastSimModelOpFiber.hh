@@ -1,21 +1,21 @@
-#ifndef FastFiberModel_h
-#define FastFiberModel_h 1
+#ifndef FastSimModelOpFiber_h
+#define FastSimModelOpFiber_h 1
 
-#include "G4GenericMessenger.hh"
-#include "G4Material.hh"
-#include "G4OpAbsorption.hh"
-#include "G4OpBoundaryProcess.hh"
-#include "G4OpWLS.hh"
 #include "G4VFastSimulationModel.hh"
+#include "G4OpBoundaryProcess.hh"
+#include "G4GenericMessenger.hh"
+#include "G4OpBoundaryProcess.hh"
+#include "G4OpAbsorption.hh"
+#include "G4OpWLS.hh"
+#include "G4Material.hh"
 
 struct FastFiberData {
 public:
-  FastFiberData(G4int, G4double, G4double, G4double, G4ThreeVector,
-                G4ThreeVector, G4ThreeVector,
-                G4int status = G4OpBoundaryProcessStatus::Undefined);
+  FastFiberData(G4int, G4double, G4double, G4double, G4ThreeVector, G4ThreeVector, G4ThreeVector, G4int status=G4OpBoundaryProcessStatus::Undefined);
   ~FastFiberData() {}
 
-  // FastFiberData& operator=(const FastFiberData& right);
+  FastFiberData& operator=(const FastFiberData &right);
+  void reset();
 
   G4double GetAbsorptionNILL() { return mOpAbsorptionNumIntLenLeft; }
   void SetAbsorptionNILL(G4double in) { mOpAbsorptionNumIntLenLeft = in; }
@@ -29,7 +29,7 @@ public:
   G4double GetStepLengthInterval() { return mStepLengthInterval; }
   void AddStepLengthInterval(G4double in) { mStepLengthInterval += in; }
 
-  G4bool checkRepetitive(const FastFiberData, G4bool checkInterval = true);
+  G4bool checkRepetitive(const FastFiberData, G4bool checkInterval=true);
 
   G4int trackID;
   G4double kineticEnergy;
@@ -38,7 +38,6 @@ public:
   G4ThreeVector globalPosition;
   G4ThreeVector momentumDirection;
   G4ThreeVector polarization;
-
 private:
   G4int mOpBoundaryStatus;
   G4double mOpAbsorptionNumIntLenLeft;
@@ -46,10 +45,10 @@ private:
   G4double mStepLengthInterval;
 };
 
-class FastFiberModel : public G4VFastSimulationModel {
+class FastSimModelOpFiber : public G4VFastSimulationModel {
 public:
-  FastFiberModel(G4String, G4Region*);
-  ~FastFiberModel();
+  FastSimModelOpFiber(G4String, G4Region*);
+  ~FastSimModelOpFiber();
 
   virtual G4bool IsApplicable(const G4ParticleDefinition&);
   virtual G4bool ModelTrigger(const G4FastTrack&);
@@ -61,8 +60,6 @@ private:
   G4bool checkTotalInternalReflection(const G4Track* track);
   G4bool checkAbsorption(const G4double prevNILL, const G4double currentNILL);
   G4bool checkNILL();
-
-  G4ThreeVector getXYcomponent(const FastFiberData&);
 
   void setPostStepProc(const G4Track* track);
   void reset();

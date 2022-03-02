@@ -1,10 +1,3 @@
-##**************************************************
-## \file CMakeLists.txt
-## \brief: CMakeLists of G4Bucatini project
-## \author: Lorenzo Pezzotti (CERN EP-SFT-sim) @lopezzot
-## \start date: 7 July 2021
-##**************************************************
-
 # Setup the project
 cmake_minimum_required(VERSION 3.8...3.18)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
@@ -14,13 +7,15 @@ project(Bucatini)
 
 # Find Geant4 package, activating all available UI and Vis drivers by default
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
+option(ISOPTICAL "Enable (fast) optical physics and sipm simaulation" ON)
+
 if(WITH_GEANT4_UIVIS)
-  find_package(Geant4 11 REQUIRED ui_all vis_all)
+  find_package(Geant4 REQUIRED ui_all vis_all)
 else()
-  find_package(Geant4 11 REQUIRED)
+  find_package(Geant4 REQUIRED)
 endif()
 
-# Setup Geant4 include directories and prohect include directories
+# Setup Geant4 include directories
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
@@ -32,15 +27,17 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 
 # Add the executable and link it to the Geant4 libraries
 add_executable(Bucatini Bucatini.cc ${sources} ${headers})
-target_link_libraries(Bucatini ${Geant4_LIBRARIES})
-target_link_libraries(Bucatini sipm)
+target_link_libraries(Bucatini PRIVATE
+    ${Geant4_LIBRARIES}
+    VecGeom::vecgeom
+    sipm
+)
 
 # Copy all scripts to the build directory
 set(Bucatini_SCRIPTS
   Bucatini_gui.mac
   Bucatini_init_vis.mac
   Bucatini_run.mac
-  python/eventdisplay.py
   )
 
 foreach(_script ${Bucatini_SCRIPTS})
@@ -50,9 +47,6 @@ foreach(_script ${Bucatini_SCRIPTS})
     COPYONLY
     )
 endforeach()
-
-# For internal Geant4 use
-add_custom_target(G4Bucatini DEPENDS G4EMTubes)
 
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 install(TARGETS Bucatini DESTINATION bin)
